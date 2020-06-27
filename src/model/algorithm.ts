@@ -414,14 +414,18 @@ export abstract class Scheduler implements IScheduler {
                 }
             }
 
+            if (this.preempty) {
+              this.minPreempting( this.inputProcess);
+            }
+
             if (this.ioMode === IOType.Multi) {
                 // tslint:disable-next-line:prefer-for-of
                 for (let i = 0; i < this.inputProcess.length; i++) {
                     const proc = this.inputProcess[i];
                     if (proc.TaskQueue.getLength() !== 0 && proc.TaskQueue.peek().Type === TaskType.IO) {
                         if (!proc.TaskQueue.peek().isFinished()) {
-                            story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'IO'));
                             proc.TaskQueue.peek().run();
+                            story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'IO'));
                         }
                         if (proc.TaskQueue.peek().isFinished()) {
                             proc.TaskQueue.deQueue();
@@ -436,35 +440,6 @@ export abstract class Scheduler implements IScheduler {
 
                 }
             }
-            if (this.ioMode === IOType.Single) {
-                if (this.ioQueue.getLength() !== 0) {
-                    const proc = Process.peekProcess(this.inputProcess, this.ioQueue);
-                    if (proc.TaskQueue.getLength() !== 0 && proc.TaskQueue.peek().Type === TaskType.IO) {
-                        if (!proc.TaskQueue.peek().isFinished()) {
-                            story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'IO'));
-                            proc.TaskQueue.peek().run();
-                        }
-                        if (proc.TaskQueue.peek().isFinished()) {
-                            proc.TaskQueue.deQueue();
-                            this.ioQueue.deQueue();
-
-                            if (proc.TaskQueue.getLength() !== 0 && proc.TaskQueue.peek().Type === TaskType.CPU) {
-
-                                this.cpuQueue.enQueue(proc.ProcessID);
-                                if (!cpuProcessing && this.sortable) {
-                                    this.minPreempting(this.inputProcess);
-                                    cpuProcessing = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            if (this.preempty) {
-                this.minPreempting( this.inputProcess);
-            }
 
             if (story.Clock === 0 && this.cpuQueue.getLength() > 1) {
                 this.minPreempting(this.inputProcess);
@@ -475,12 +450,12 @@ export abstract class Scheduler implements IScheduler {
                 if (proc.TaskQueue.getLength() !== 0 && proc.TaskQueue.peek().Type === TaskType.CPU) {
                     if (!proc.TaskQueue.peek().isFinished()) {
                         if (this.interruptTime === 0) {
-                            story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'CPU'));
-                            proc.TaskQueue.peek().run();
+                          proc.TaskQueue.peek().run();
+                          story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'CPU'));
                         } else {
                             if (cpuRemaining > 0) {
-                                story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'CPU'));
                                 proc.TaskQueue.peek().run();
+                                story.addEvent(new StoryEvent(story.Clock + 1, proc.ProcessID, 'CPU'));
                                 cpuRemaining--;
                             }
 
@@ -537,43 +512,38 @@ export abstract class Scheduler implements IScheduler {
 
         return story;
     }
+
     private sortQueue(startPos: number, queue: Queue<string>): void {
-        const temp = new Array<Process>();
+      const temp = new Array<Process>();
 
-        if (queue.getLength() > startPos) {
-            for (let i = startPos; i < queue.getLength(); i++) {
-                const name = queue.List[i];
-                // tslint:disable-next-line:prefer-for-of
-                for (let j = 0; j < this.inputProcess.length; j++) {
-                    if (this.inputProcess[j].ProcessID === name) {
-                        temp.push(this.inputProcess[j]);
-                    }
-                }
-
+      if (queue.getLength() > startPos) {
+        for (let i = startPos; i < queue.getLength(); i++) {
+          const name = queue.List[i];
+          // tslint:disable-next-line: prefer-for-of
+          for (let j = 0; j < this.inputProcess.length; j++) {
+            if (this.inputProcess[j].ProcessID === name) {
+              temp.push(this.inputProcess[j]);
             }
-
-            temp.sort((a: Process, b: Process) => {
-                const taskA = a.TaskQueue.peek();
-                const taskB = b.TaskQueue.peek();
-                if (taskA !== undefined && taskB !== undefined) {
-                    if (taskA.Duration < taskB.Duration) {
-                        return -1;
-                    } else if (taskA.Duration > taskB.Duration) {
-                        return 1;
-}
-                }
-                return 0;
-            });
-
-            let curr = 0;
-            for (let i = startPos; i < queue.getLength(); i++) {
-                queue.List[i] = temp[curr].ProcessID;
-                curr++;
-            }
-
+          }
         }
 
+        temp.sort((a: Process, b: Process) => {
+          const taskA = a.TaskQueue.peek();
+          const taskB = b.TaskQueue.peek();
+          if (taskA !== undefined && taskB !== undefined) {
+            if (taskA.Duration < taskB.Duration) { return -1; } else if (taskA.Duration > taskB.Duration) { return 1; }
+          }
+          return 0;
+        });
+
+        let curr = 0;
+        for (let i = startPos; i < queue.getLength(); i++) {
+          queue.List[i] = temp[curr].ProcessID;
+          curr++;
+        }
+      }
     }
+
     private minPreempting(list: Process[]): void {
         const temp = new Array<Process>();
 
