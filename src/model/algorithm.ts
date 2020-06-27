@@ -408,7 +408,6 @@ export abstract class Scheduler implements IScheduler {
                           proc.IOFlag = false;
                           if (proc.TaskQueue.getLength() !== 0 && proc.TaskQueue.peek().Type === TaskType.CPU) {
                               this.cpuQueue.enQueue(proc.ProcessID);
-
                           }
                       }
 
