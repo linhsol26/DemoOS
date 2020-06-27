@@ -605,7 +605,7 @@ export class FcfsScheduler extends Scheduler {
    */
   constructor(inputProcess: Array<Process>) {
       super(inputProcess);
-      this.sortable = false;
+      this.sortable = true;
       this.preempty = false;
       this.interruptTime = 0;
   }
