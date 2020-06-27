@@ -569,6 +569,7 @@ export abstract class Scheduler implements IScheduler {
               if (temp[i].TaskQueue.getLength() !== 0 && temp[0].TaskQueue.getLength() !== 0) {
                   if (temp[i].TaskQueue.peek().Duration < temp[0].TaskQueue.peek().Duration) {
                       minPos = i;
+                      break;
                   }
               }
           }
