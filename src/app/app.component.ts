@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   // cpu = [[1, 1, 1, 1, 1], [2, 2, 3], [13, 2]];
   // io = [[4, 4, 4, 4], [7, 7], [6]];
 
-  // bug CPU of Process 3
+  // Correct
   // arriveTime = [0, 1, 2];
   // cpu = [[3, 3], [2, 2], [1, 5]];
   // io = [[4], [2], [1]];

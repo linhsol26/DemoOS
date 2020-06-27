@@ -590,10 +590,7 @@ export abstract class Scheduler implements IScheduler {
     }
 }
 
-
 export class FcfsScheduler extends Scheduler {
-
-
 
     constructor(inputProcess: Array<Process>) {
         super(inputProcess);
@@ -602,12 +599,10 @@ export class FcfsScheduler extends Scheduler {
         this.interruptTime = 0;
     }
 
-
     public scheduling(): Storyboard {
         return super.scheduling();
     }
 }
-
 
 export class SjfScheduler extends Scheduler {
 
