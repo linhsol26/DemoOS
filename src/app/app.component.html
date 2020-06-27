@@ -59,10 +59,19 @@
   <div class='sub-content-2'>
     <button mat-raised-button (click)="add()">Add</button>
     <button mat-raised-button (click)="save()">Save</button>
-    <button mat-raised-button *ngIf="flagRun" (click)="run()">Run</button>
     <button mat-raised-button (click)="minus()">Minus</button>
   </div>
 
+  <br>
+  <div class='sub-content-2' *ngIf='flagRun'>
+    <mat-radio-group aria-label="Select an algorithm" [(ngModel)]='chosenAlgo'>
+      <mat-radio-button value='FCFS'>FCFS</mat-radio-button>
+      <mat-radio-button value='SJF'>SJF</mat-radio-button>
+      <mat-radio-button value='SRTF'>SRTF</mat-radio-button>
+      <mat-radio-button value='RR'>RR</mat-radio-button>
+    </mat-radio-group>
+    <button mat-raised-button *ngIf="flagRun" (click)="run()">Run</button>
+  </div>
 </div>
 <br>
 <google-chart [data]='chart' *ngIf='flagChart' height='500'></google-chart>

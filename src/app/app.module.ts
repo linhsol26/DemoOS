@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // tslint:disable-next-line:max-line-length
-import { MatButtonModule, MatTableModule, MatProgressBarModule, MatCardModule, MatGridListModule, MatFormFieldModule, MatSelectModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatTableModule, MatProgressBarModule, MatCardModule, MatGridListModule, MatFormFieldModule, MatSelectModule, MatIconModule, MatInputModule, MatRadioModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
@@ -24,7 +24,8 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
     MatSelectModule,
     MatIconModule,
     Ng2GoogleChartsModule,
-    MatInputModule
+    MatInputModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

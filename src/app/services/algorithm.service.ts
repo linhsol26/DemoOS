@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Process, Task, Queue, TaskType, SrtfScheduler, Storyboard, StoryEvent } from 'src/model/algorithm';
+// tslint:disable-next-line:max-line-length
+import { Process, Task, Queue, TaskType, SrtfScheduler, Storyboard, StoryEvent, FcfsScheduler, SjfScheduler, RoundRobinScheduler } from 'src/model/algorithm';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,17 @@ export class AlgorithmService {
     return procList;
   }
 
-  runAlgo(procList: Array<Process>, phases: string[], io: Array<Array<number>>, arriveTime: Array<number>) {
-    const scheduler = new SrtfScheduler(procList);
+  runAlgo(procList: Array<Process>, phases: string[], io: Array<Array<number>>, arriveTime: Array<number>, chosen: string) {
+    let scheduler;
+    if (chosen === 'FCFS') {
+      scheduler = new FcfsScheduler(procList);
+    } else if (chosen === 'SJF') {
+      scheduler = new SjfScheduler(procList);
+    } else if (chosen === 'SRTF') {
+      scheduler = new SrtfScheduler(procList);
+    } else {
+      scheduler = new RoundRobinScheduler(procList, 2);
+    }
 
     // Nhận kết quả trả về là một Storyboard
     const story: Storyboard = scheduler.scheduling();

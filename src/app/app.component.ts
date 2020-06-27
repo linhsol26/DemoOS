@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Process } from 'src/model/algorithm';
 import { AlgorithmService } from './services/algorithm.service';
+import { Process } from 'src/model/algorithm';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   resultArray: Array<any> = [
     ['Name', 'State', 'From', 'To'],
   ];
+  chosenAlgo = 'RR';
   public chart: any = {
     chartType: 'Timeline',
     dataTable: this.resultArray,
@@ -54,7 +55,7 @@ export class AppComponent implements OnInit {
   run() {
     let procList = new Array<Process>();
     procList = this.algorithm.initProcess(this.phases, this.arriveTime, this.cpu, this.io);
-    const tempArray = this.algorithm.runAlgo(procList, this.phases, this.io, this.arriveTime);
+    const tempArray = this.algorithm.runAlgo(procList, this.phases, this.io, this.arriveTime, this.chosenAlgo);
     tempArray.forEach(i => {
       this.resultArray.push(i);
     });
