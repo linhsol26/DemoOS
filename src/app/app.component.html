@@ -81,8 +81,8 @@
     </mat-form-field>
   </div>
   <br>
-  <div *ngIf='flagRun' class="sub-content-2">
-    <button mat-raised-button *ngIf="flagRun" (click)="run()">Run</button>
+  <div class="sub-content-2">
+    <button mat-raised-button *ngIf="flagRun && !flagChart" (click)="run()">Run</button>
     <button mat-flat-button *ngIf='flagChart' (click)='reNew()'>ReDraw</button>
   </div>
 </div>

@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     });
     this.chart.dataTable = this.resultArray;
     this.flagChart = true;
+    this.flagRun = false;
   }
 
   confirmNOP() {
@@ -109,6 +110,7 @@ export class AppComponent implements OnInit {
       ['Name', 'State', 'From', 'To'],
     ];
     this.flagChart = false;
+    this.flagRun = true;
   }
 
   clearAllData() {
