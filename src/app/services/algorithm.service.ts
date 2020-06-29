@@ -87,6 +87,17 @@ export class AlgorithmService {
                 }
               }
             }
+
+            if (
+              result[i].startTime === result[j].startTime &&
+              result[i].endTime === result[j].endTime &&
+              result[i].Name !== result[j].Name
+            ) {
+              if (result[i].Task === 'CPU' && result[j].Task === 'CPU') {
+                  result[j].startTime++;
+                  result[j].endTime++;
+              }
+            }
           }
         }
       }

@@ -16,7 +16,11 @@ export class AppComponent implements OnInit {
   chosenAlgo = 'RR';
   public chart: any = {
     chartType: 'Timeline',
-    dataTable: []
+    dataTable: [],
+    options: {
+      height: 600,
+      width: 1325
+    }
   };
 
   // correct
@@ -24,7 +28,7 @@ export class AppComponent implements OnInit {
   // cpu = [[3, 3], [1, 1], [2, 3]];
   // io = [[2], [2], [3]];
 
-  // unconfirmed
+  // correct
   // arriveTime = [0, 0, 0];
   // cpu = [[1, 1, 1, 1, 1], [2, 2, 3], [13, 2]];
   // io = [[4, 4, 4, 4], [7, 7], [6]];
