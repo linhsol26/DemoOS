@@ -9,7 +9,7 @@ import { Process } from 'src/model/algorithm';
 })
 export class AppComponent implements OnInit {
   title = 'demoOS';
-
+  maxNum: number;
   resultArray: Array<any> = [
     ['Name', 'State', 'From', 'To'],
   ];
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     dataTable: [],
     options: {
       height: 600,
-      width: 1325
+      width: 70 * (this.maxNum / 1000)
     }
   };
 
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   numOfProcess: number;
   flagChart = false;
   flagRun = false;
+
   constructor(
     public algorithm: AlgorithmService
   ) {}
@@ -63,6 +64,17 @@ export class AppComponent implements OnInit {
     tempArray.forEach(i => {
       this.resultArray.push(i);
     });
+    const max = this.resultArray.filter(i => {
+      if (i[1] === 'Terminated') {
+        return i[3];
+      }
+    });
+    this.maxNum = max[0][3];
+    for (let i = 1; i < max.length; i++) {
+      if (max[i][3] > this.maxNum) {
+        this.maxNum = max[i][3];
+      }
+    }
     this.chart.dataTable = this.resultArray;
     this.flagChart = true;
   }
