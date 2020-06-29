@@ -87,8 +87,8 @@
   </div>
 </div>
 <br>
-<div style='overflow-x: scroll;'>
-  <google-chart [data]='chart' *ngIf='flagChart'></google-chart>
+<div style='overflow-x: scroll;' *ngIf='flagChart'>
+  <google-chart [data]='chart'></google-chart>
 </div>
 
 <router-outlet></router-outlet>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { Process, Task, Queue, TaskType, SrtfScheduler, Storyboard, StoryEvent, FcfsScheduler, SjfScheduler, RoundRobinScheduler } from 'src/model/algorithm';
+import { keyframes } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -80,11 +81,15 @@ export class AlgorithmService {
                 }
               } else if (result[i].Task === 'IO') {
                 if (result[j].Task === 'IO') {
-                    result[j].startTime++;
-                    result[j].endTime++;
+                  for (let k = j; k < result.length; k++) {
+                    if (result[k].Task === 'IO') {
+                      result[k].startTime++;
+                      result[k].endTime++;
+                    }
+                  }
                 } else { // result[j].Task === 'CPU'
-                    result[j].startTime++;
-                    result[j].endTime++;
+                  result[j].startTime++;
+                  result[j].endTime++;
                 }
               }
             }
@@ -193,29 +198,29 @@ export class AlgorithmService {
     }
 
     // push waiting time
-    for (let i = 0; i < phases.length; i++) {
-      for (let j = 0; j < tempArray[i].length; j++) {
-        if (tempArray[i][j].startTime === tempArray[i][j].endTime) {
-            continue;
-        } else {
-          const current = tempArray[i][j - 1].endTime;
-          const next = tempArray[i][j].startTime;
-          if (current !== next) {
-            if ((tempArray[i][j - 1].Task === 'CPU' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'IO'))
-            || (tempArray[i][j - 1].Task === 'IO' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'CPU'))
-            ) {
-              resultArray.push([
-                  tempArray[i][j].Name,
-                  'Waiting',
-                  current * 1000,
-                  next * 1000
-              ]);
-              // this.waitingTime.push(next - current);
-            }
-          }
-        }
-      }
-    }
+    // for (let i = 0; i < phases.length; i++) {
+    //   for (let j = 0; j < tempArray[i].length; j++) {
+    //     if (tempArray[i][j].startTime === tempArray[i][j].endTime) {
+    //         continue;
+    //     } else {
+    //       const current = tempArray[i][j - 1].endTime;
+    //       const next = tempArray[i][j].startTime;
+    //       if (current !== next) {
+    //         if ((tempArray[i][j - 1].Task === 'CPU' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'IO'))
+    //         || (tempArray[i][j - 1].Task === 'IO' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'CPU'))
+    //         ) {
+    //           resultArray.push([
+    //               tempArray[i][j].Name,
+    //               'Waiting',
+    //               current * 1000,
+    //               next * 1000
+    //           ]);
+    //           // this.waitingTime.push(next - current);
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     // // tslint:disable-next-line:prefer-for-of
     // for (let i = 0; i < phases.length; i++) {
