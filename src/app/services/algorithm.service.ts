@@ -82,12 +82,8 @@ export class AlgorithmService {
                     result[j].startTime++;
                     result[j].endTime++;
                 } else { // result[j].Task === 'CPU'
-                  for (let k = j; k < result.length; k++) {
-                      if (result[k].Task === 'CPU') {
-                      result[k].startTime++;
-                      result[k].endTime++;
-                      }
-                  }
+                    result[j].startTime++;
+                    result[j].endTime++;
                 }
               }
             }
