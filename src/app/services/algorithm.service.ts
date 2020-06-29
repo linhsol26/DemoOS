@@ -55,25 +55,46 @@ export class AlgorithmService {
       });
 
     result = [... new Set(result)];
-    // bug CPU
+
     for (let i = 0; i < result.length; i++) {
-      if (result[i].startTime === result[i].endTime) {
-        continue;
-      }
-      const current = result[i - 1];
-      const next = result[i];
-      if (current.startTime === next.startTime &&
-          current.Task === 'IO' && next.Task === 'CPU' &&
-          current.Name === next.Name) {
-          for (let j = i; j < result.length; j++) {
-            if (result[j].Task === 'CPU') {
-              result[j].startTime++;
-              result[j].endTime++;
+      if (result[i].Task !== ('Arrived' || 'Terminated')) {
+        for (let j = result.length - 1; j > i; j--) {
+          if (result[j] !== ('Arrived' || 'Terminated')) {
+            if (
+              result[i].startTime === result[j].startTime &&
+              result[i].endTime === result[j].endTime &&
+              result[i].Name === result[j].Name
+            ) {
+              if (result[i].Task === 'CPU') {
+                if (result[j].Task === 'CPU') {
+                    for (let k = j; k < result.length; k++) {
+                        if (result[k].Task === 'CPU') {
+                        result[k].startTime++;
+                        result[k].endTime++;
+                        }
+                    }
+                } else { // result[j].Task === 'IO'
+                  result[j].startTime++;
+                  result[j].endTime++;
+                }
+              } else if (result[i].Task === 'IO') {
+                if (result[j].Task === 'IO') {
+                    result[j].startTime++;
+                    result[j].endTime++;
+                } else { // result[j].Task === 'CPU'
+                  for (let k = j; k < result.length; k++) {
+                      if (result[k].Task === 'CPU') {
+                      result[k].startTime++;
+                      result[k].endTime++;
+                      }
+                  }
+                }
+              }
             }
           }
         }
+      }
     }
-
     // filter each Process
     const eachProcess: Array<any> = [];
     for (const i of phases) {
@@ -95,24 +116,22 @@ export class AlgorithmService {
         tempArray.push(temp);
     }
     tempArray = [... new Set(tempArray)];
-    for (let i = 0; i < phases.length; i++) {
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < tempArray.length; i++) {
       for (let j = 0; j < tempArray[i].length; j++) {
-        if (tempArray[i][j].Task === 'Arrived') {
-          continue;
-        }
+        if (tempArray[i][j].startTime === tempArray[i][j].endTime) { continue; }
         const current = tempArray[i][j - 1];
         const next = tempArray[i][j];
-        if (current.startTime === next.startTime && current.Task !== 'Arrived') {
-          next.startTime++;
-          next.endTime++;
-        }
-
-        if (current.startTime > next.startTime) {
-          next.startTime += 2;
-          next.endTime += 2;
+        if (current.Task === 'IO' && next.Task === 'IO') {
+          if (current.endTime !== next.startTime) {
+              next.startTime = current.endTime;
+              next.endTime = current.endTime + 1;
+          }
         }
       }
     }
+
     const resultArray: Array<any> = [];
     for (let i = 0; i < phases.length; i++) {
       tempArray[i].pop();
@@ -183,7 +202,7 @@ export class AlgorithmService {
                   current * 1000,
                   next * 1000
               ]);
-              this.waitingTime.push(next - current);
+              // this.waitingTime.push(next - current);
             }
           }
         }

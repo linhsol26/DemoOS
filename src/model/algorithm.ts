@@ -389,10 +389,10 @@ export abstract class Scheduler implements IScheduler {
             this.minPreempting( this.inputProcess);
           }
 
-          if (cpuRemaining === 0 && this.interruptTime !== 0) {
-            this.cpuQueue.enQueue(this.cpuQueue.deQueue());
-            cpuRemaining = this.interruptTime;
-          }
+          // if (cpuRemaining === 0 && this.interruptTime !== 0) {
+          //   this.cpuQueue.enQueue(this.cpuQueue.deQueue());
+          //   cpuRemaining = this.interruptTime;
+          // }
 
           if (this.ioMode === IOType.Multi) {
               // tslint:disable-next-line:prefer-for-of
@@ -460,12 +460,12 @@ export abstract class Scheduler implements IScheduler {
 
                       }
                   }
-                  // if (cpuRemaining === 0 && this.interruptTime !== 0) {
-                  //     if (!proc.TaskQueue.peek().isFinished()) {
-                  //         this.cpuQueue.enQueue(this.cpuQueue.deQueue());
-                  //     }
-                  //     cpuRemaining = this.interruptTime;
-                  // }
+                  if (cpuRemaining === 0 && this.interruptTime !== 0) {
+                      if (!proc.TaskQueue.peek().isFinished()) {
+                          this.cpuQueue.enQueue(this.cpuQueue.deQueue());
+                      }
+                      cpuRemaining = this.interruptTime;
+                  }
                   if (proc.TaskQueue.peek().isFinished()) {
                       this.cpuQueue.deQueue();
                       proc.TaskQueue.deQueue();
