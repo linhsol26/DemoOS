@@ -389,10 +389,10 @@ export abstract class Scheduler implements IScheduler {
             this.minPreempting( this.inputProcess);
           }
 
-          // if (cpuRemaining === 0 && this.interruptTime !== 0) {
-          //   this.cpuQueue.enQueue(this.cpuQueue.deQueue());
-          //   cpuRemaining = this.interruptTime;
-          // }
+          if (cpuRemaining === 0 && this.interruptTime !== 0) {
+            this.cpuQueue.enQueue(this.cpuQueue.deQueue());
+            cpuRemaining = this.interruptTime;
+          }
 
           if (this.ioMode === IOType.Multi) {
               // tslint:disable-next-line:prefer-for-of
@@ -460,12 +460,7 @@ export abstract class Scheduler implements IScheduler {
 
                       }
                   }
-                  if (cpuRemaining === 0 && this.interruptTime !== 0) {
-                      if (!proc.TaskQueue.peek().isFinished()) {
-                          this.cpuQueue.enQueue(this.cpuQueue.deQueue());
-                      }
-                      cpuRemaining = this.interruptTime;
-                  }
+
                   if (proc.TaskQueue.peek().isFinished()) {
                       this.cpuQueue.deQueue();
                       proc.TaskQueue.deQueue();
@@ -534,7 +529,7 @@ export abstract class Scheduler implements IScheduler {
                       return -1;
                   } else if (taskA.Duration > taskB.Duration) {
                       return 1;
- }
+                  }
               }
               return 0;
           });
@@ -605,7 +600,7 @@ export class FcfsScheduler extends Scheduler {
    */
   constructor(inputProcess: Array<Process>) {
       super(inputProcess);
-      this.sortable = true;
+      this.sortable = false;
       this.preempty = false;
       this.interruptTime = 0;
   }
