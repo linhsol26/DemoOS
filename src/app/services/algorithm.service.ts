@@ -198,29 +198,29 @@ export class AlgorithmService {
     }
 
     // push waiting time
-    // for (let i = 0; i < phases.length; i++) {
-    //   for (let j = 0; j < tempArray[i].length; j++) {
-    //     if (tempArray[i][j].startTime === tempArray[i][j].endTime) {
-    //         continue;
-    //     } else {
-    //       const current = tempArray[i][j - 1].endTime;
-    //       const next = tempArray[i][j].startTime;
-    //       if (current !== next) {
-    //         if ((tempArray[i][j - 1].Task === 'CPU' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'IO'))
-    //         || (tempArray[i][j - 1].Task === 'IO' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'CPU'))
-    //         ) {
-    //           resultArray.push([
-    //               tempArray[i][j].Name,
-    //               'Waiting',
-    //               current * 1000,
-    //               next * 1000
-    //           ]);
-    //           // this.waitingTime.push(next - current);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    for (let i = 0; i < phases.length; i++) {
+      for (let j = 0; j < tempArray[i].length; j++) {
+        if (tempArray[i][j].startTime === tempArray[i][j].endTime) {
+            continue;
+        } else {
+          const current = tempArray[i][j - 1].endTime;
+          const next = tempArray[i][j].startTime;
+          if (current !== next) {
+            if ((tempArray[i][j - 1].Task === 'CPU' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'IO'))
+            || (tempArray[i][j - 1].Task === 'IO' && (tempArray[i][j].Task === 'CPU' || tempArray[i][j].Task === 'CPU'))
+            ) {
+              resultArray.push([
+                  tempArray[i][j].Name,
+                  'Waiting',
+                  current * 1000,
+                  next * 1000
+              ]);
+              // this.waitingTime.push(next - current);
+            }
+          }
+        }
+      }
+    }
 
     // // tslint:disable-next-line:prefer-for-of
     // for (let i = 0; i < phases.length; i++) {
