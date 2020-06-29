@@ -28,7 +28,8 @@ export class AlgorithmService {
     return procList;
   }
 
-  runAlgo(procList: Array<Process>, phases: string[], io: Array<Array<number>>, arriveTime: Array<number>, chosen: string) {
+  // tslint:disable-next-line:max-line-length
+  runAlgo(procList: Array<Process>, phases: string[], io: Array<Array<number>>, arriveTime: Array<number>, chosen: string, quantum: number) {
     let scheduler;
     if (chosen === 'FCFS') {
       scheduler = new FcfsScheduler(procList);
@@ -37,7 +38,7 @@ export class AlgorithmService {
     } else if (chosen === 'SRTF') {
       scheduler = new SrtfScheduler(procList);
     } else {
-      scheduler = new RoundRobinScheduler(procList, 5);
+      scheduler = new RoundRobinScheduler(procList, quantum);
     }
 
     // Nhận kết quả trả về là một Storyboard

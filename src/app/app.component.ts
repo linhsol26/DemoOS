@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   arriveTime: Array<number> = [];
   cpu: Array<Array<number>> = [];
   io: Array<Array<number>> = [];
+  quantum: number;
 
   // input data
   buttonFlag = true;
@@ -58,7 +59,7 @@ export class AppComponent implements OnInit {
   run() {
     let procList = new Array<Process>();
     procList = this.algorithm.initProcess(this.phases, this.arriveTime, this.cpu, this.io);
-    const tempArray = this.algorithm.runAlgo(procList, this.phases, this.io, this.arriveTime, this.chosenAlgo);
+    const tempArray = this.algorithm.runAlgo(procList, this.phases, this.io, this.arriveTime, this.chosenAlgo, this.quantum);
     tempArray.forEach(i => {
       this.resultArray.push(i);
     });
