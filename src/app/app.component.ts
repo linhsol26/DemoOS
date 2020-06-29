@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlgorithmService } from './services/algorithm.service';
 import { Process } from 'src/model/algorithm';
-
+// import { OnChanges } from 'ng2-google-charts';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   chosenAlgo = 'RR';
   public chart: any = {
     chartType: 'Timeline',
-    dataTable: this.resultArray,
+    dataTable: []
   };
 
   // correct
@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
   io: Array<Array<number>> = [];
 
   // input data
-  inputFlag = false;
   buttonFlag = true;
   numOfProcess: number;
   flagChart = false;
@@ -59,7 +58,7 @@ export class AppComponent implements OnInit {
     tempArray.forEach(i => {
       this.resultArray.push(i);
     });
-
+    this.chart.dataTable = this.resultArray;
     this.flagChart = true;
   }
 
@@ -98,5 +97,25 @@ export class AppComponent implements OnInit {
   transformData(value: any) {
     const result = value.split`,`.map(x => +x);
     return result;
+  }
+
+  reNew() {
+    this.resultArray = [
+      ['Name', 'State', 'From', 'To'],
+    ];
+    this.flagChart = false;
+  }
+
+  clearAllData() {
+    this.resultArray = [
+      ['Name', 'State', 'From', 'To'],
+    ];
+    this.flagChart = false;
+    this.phases = [];
+    this.arriveTime = [];
+    this.cpu = [];
+    this.io = [];
+    this.buttonFlag = true;
+    this.flagRun = false;
   }
 }

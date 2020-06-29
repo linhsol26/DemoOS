@@ -8,8 +8,9 @@
     </mat-select>
   </mat-form-field>
   <button mat-raised-button (click)='confirmNOP()'>OK</button>
+  <button mat-flat-button *ngIf='!buttonFlag' (click)='clearAllData()'>Clear</button>
 </div>
-
+<br>
 <div *ngIf='!buttonFlag'>
 
   <div *ngFor='let v of phases; let i = index' class='sub-content-2'>
@@ -71,10 +72,10 @@
       <mat-radio-button value='RR'>RR</mat-radio-button>
     </mat-radio-group>
     <button mat-raised-button *ngIf="flagRun" (click)="run()">Run</button>
+    <button mat-flat-button *ngIf='flagChart' (click)='reNew()'>ReDraw</button>
   </div>
 </div>
 <br>
-<google-chart [data]='chart' *ngIf='flagChart' height='500'></google-chart>
-
+  <google-chart [data]='chart' *ngIf='flagChart' height='500'></google-chart>
 
 <router-outlet></router-outlet>
