@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     dataTable: [],
     options: {
       height: 600,
-      width: 70 * (this.maxNum / 1000)
+      width: 1345
     }
   };
 
@@ -69,12 +69,12 @@ export class AppComponent implements OnInit {
         return i[3];
       }
     });
-    this.maxNum = max[0][3];
-    for (let i = 1; i < max.length; i++) {
-      if (max[i][3] > this.maxNum) {
-        this.maxNum = max[i][3];
-      }
-    }
+    // this.maxNum = max[0][3];
+    // for (let i = 1; i < max.length; i++) {
+    //   if (max[i][3] > this.maxNum) {
+    //     this.maxNum = max[i][3];
+    //   }
+    // }
     this.chart.dataTable = this.resultArray;
     this.flagChart = true;
   }
