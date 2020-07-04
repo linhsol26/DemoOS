@@ -563,7 +563,6 @@ export abstract class Scheduler implements IScheduler {
               if (temp[i].TaskQueue.getLength() !== 0 && temp[0].TaskQueue.getLength() !== 0) {
                   if (temp[i].TaskQueue.peek().Duration < temp[0].TaskQueue.peek().Duration) {
                       minPos = i;
-                      break;
                   }
               }
           }
@@ -578,12 +577,12 @@ export abstract class Scheduler implements IScheduler {
               }
 
           }
-          for (let i = 1; i < temp.length; i++) {
+          for (let i = 0; i < temp.length; i++) {
               if (i !== minPos) {
                   this.cpuQueue.enQueue(temp[i].ProcessID);
               }
           }
-          this.cpuQueue.enQueue(temp[0].ProcessID);
+          // this.cpuQueue.enQueue(temp[0].ProcessID);
 
       }
 
